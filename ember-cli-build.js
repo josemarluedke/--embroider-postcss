@@ -1,10 +1,22 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const path = require('path')
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
-    // Add options here
+    postcssOptions: {
+      compile: {
+        enabled: true,
+        cacheInclude: [/.*\.hbs$/, /.*\.css$/, /.tailwind\.config\.js$/],
+        plugins: [
+          require('postcss-import'),
+          require('tailwindcss')(
+            path.join('app', 'styles', 'tailwind.config.js')
+          )
+        ]
+      }
+    }
   });
 
   // Use `app.import` to add additional libraries to the generated
